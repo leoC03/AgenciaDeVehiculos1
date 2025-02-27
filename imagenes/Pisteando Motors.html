@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<!-- saved from url=(0037)http://127.0.0.1:5500/Untitled-1.html -->
+<html lang="es"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pisteando Motors</title>
+    <link rel="stylesheet" href="./Pisteando Motors_files/all.min.css">
+    <link href="./Pisteando Motors_files/css2" rel="stylesheet"> <!-- Add Google Font -->
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background: #35424a;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'Times New Roman', serif; /* Changed to Times New Roman */
+            font-size: 3em; /* Adjust size if necessary */
+            margin: 0;
+        }
+
+        /* Container Styles */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        /* Card Styles */
+        .card {
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s;
+            flex: 1 1 calc(33.333% - 20px);
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+        }
+
+        /* Form Styles */
+        .login-form, .register-form, .cart {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+
+        input[type="text"], input[type="password"], input[type="submit"], .btn, .empty-cart-btn {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn, .empty-cart-btn, .checkout-btn {
+            background: #35424a;
+            color: white;
+            border: none;
+        }
+
+        .btn:hover, .empty-cart-btn:hover, .checkout-btn:hover {
+            background: #2c3e50;
+        }
+
+        /* Cart Styles */
+        .cart-items {
+            list-style: none;
+            padding: 0;
+        }
+
+        .cart-items li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .cart-items button {
+            background: #e74c3c;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .cart-items button:hover {
+            background: #c0392b;
+        }
+
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .card {
+                flex: 1 1 calc(50% - 20px);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .card {
+                flex: 1 1 100%;
+            }
+        }
+    </style>
+    <script>
+        let loggedIn = false; // Track if user is logged in
+        const cartItems = [];
+
+        function register() {
+            // Registration logic here
+            alert("Registro exitoso.");
+        }
+
+        function login() {
+            // Login logic here
+            loggedIn = true; // Set logged in status
+            document.querySelector('.vehicles').style.display = 'block'; // Show vehicles
+            document.querySelector('.vehicles-header').style.display = 'block'; // Show vehicles header
+            document.querySelector('.cart').style.display = 'block'; // Show cart
+            document.querySelector('.register-form').style.display = 'none'; // Hide register form
+            document.querySelector('.login-form').style.display = 'none'; // Hide login form
+        }
+
+        function addToCart(item) {
+            cartItems.push(item);
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartList = document.querySelector('.cart-items');
+            cartList.innerHTML = '';
+            cartItems.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `${item.name} - $${item.price} <button onclick="removeFromCart('${item.name}')">Eliminar</button>`;
+                cartList.appendChild(li);
+            });
+            document.querySelector('.cart p').innerHTML = `Actualmente hay ${cartItems.length} vehículos en el carrito.`;
+        }
+
+        function removeFromCart(itemName) {
+            const index = cartItems.findIndex(item => item.name === itemName);
+            if (index > -1) {
+                cartItems.splice(index, 1);
+            }
+            updateCart();
+        }
+
+        function emptyCart() {
+            cartItems.length = 0; // Clear the cart
+            updateCart();
+        }
+
+        function checkout() {
+            alert("Compra finalizada.");
+            emptyCart(); // Clear cart after checkout
+        }
+    </script>
+</head>
+<body>
+
+<header>
+    <h1>PISTEANDO MOTORS</h1>
+</header>
+
+<div class="container">
+    <div class="register-form" style="display: none;">
+        <h2>Registrarse</h2>
+        <input type="text" id="reg-username" placeholder="Usuario" required="">
+        <input type="password" id="reg-password" placeholder="Contraseña" required="">
+        <button class="btn" onclick="register()">Registrarse</button>
+    </div>
+
+    <div class="login-form" style="display: none;">
+        <h2>Iniciar Sesion</h2>
+        <input type="text" id="username" placeholder="Usuario" required="">
+        <input type="password" id="password" placeholder="Contraseña" required="">
+        <button class="btn" onclick="login()">Iniciar Sesion</button>
+        <p class="error"></p>
+    </div>
+
+    <h2 style="display: block;" class="vehicles-header">Vehículos Disponibles</h2>
+    <div class="vehicles" style="display: block;">
+        <div class="card">
+            <h3>Sirocco</h3>
+            <img src="./Pisteando Motors_files/rocco.jpg" alt="Sirocco" style="width: 100%; max-width: 350px;">
+            <p>Volkswagen Sirocco, motor 1.4t, DSG, 30mil km, año 2014</p>
+            <p>Precio: $20,000</p>
+            <button class="btn" onclick="addToCart({name: &#39;Sirocco&#39;, price: 20000})">Agregar al Carrito</button>
+        </div>
+        <div class="card">
+            <h3>Golf</h3>
+            <img src="./Pisteando Motors_files/volkswagen-golf-2024-restyling---foto.jpg" alt="Golf" style="width: 100%; max-width: 350px;">
+            <p>Volkswagen Golf, motor 1.4t, DSG, 0 km, año 2024</p>
+            <p>Precio: $45,000</p>
+            <button class="btn" onclick="addToCart({name: &#39;Golf&#39;, price: 45000})">Agregar al Carrito</button>
+        </div>
+        <div class="card">
+            <h3>Amarok</h3>
+            <img src="./Pisteando Motors_files/volkswagen-amarok-976605.jpg" alt="Amarok" style="width: 100%; max-width: 350px;">
+            <p>Volkswagen Amarok, motor V6 3.0, DSG, 0 km, año 2024</p>
+            <p>Precio: $65,000</p>
+            <button class="btn" onclick="addToCart({name: &#39;Amarok&#39;, price: 65000})">Agregar al Carrito</button>
+        </div>
+        <div class="card">
+            <h3>Peugeot 308</h3>
+            <img src="./Pisteando Motors_files/3-Peugeot_308-estatica-4-812x530.jpg" alt="Peugeot 308" style="width: 100%; max-width: 350px;">
+            <p>Peugeot 308 GT, motor 1.6THP, automático, 7.000km, año 2022</p>
+            <p>Precio: $65,000</p>
+            <button class="btn" onclick="addToCart({name: &#39;Peugeot 308&#39;, price: 65000})">Agregar al Carrito</button>
+        </div>
+        <div class="card">
+            <h3>Peugeot e208</h3>
+            <img src="./Pisteando Motors_files/nuevo-peugeot-208-argentina-4-1.jpg" alt="Peugeot e208" style="width: 100%; max-width: 350px;">
+            <p>Peugeot e208, motor 1.0T, híbrido, automático, 0 km, año 2024</p>
+            <p>Precio: $18,000</p>
+            <button class="btn" onclick="addToCart({name: &#39;Peugeot e208&#39;, price: 18000})">Agregar al Carrito</button>
+        </div>
+        <div class="card">
+            <h3>Peugeot RCZ</h3>
+            <img src="./Pisteando Motors_files/rcz.jpg" alt="Peugeot RCZ" style="width: 100%; max-width: 350px;">
+            <p>Peugeot RCZ, motor 1.6THP, tiptronic, 50.000 km, año 2014</p>
+            <p>Precio: $21,000</p>
+            <button class="btn" onclick="addToCart({name: &#39;Peugeot RCZ&#39;, price: 21000})">Agregar al Carrito</button>
+        </div>
+    </div>
+
+    <div class="cart" style="display: block;">
+        <h2>Carrito</h2>
+        <p>Actualmente hay 0 vehículos en el carrito.</p>
+        <ul class="cart-items"></ul>
+        <button class="empty-cart-btn" onclick="emptyCart()">Vaciar Carrito</button>
+        <button class="checkout-btn" onclick="checkout()">Finalizar Compra</button>
+    </div>
+</div>
+
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+
+
+</body></html>
